@@ -147,12 +147,12 @@ function renderProductRows(array $products, array $categoryMap): void
  */
 function filterByCategory(array $products, ?int $categoryId): array
 {
-    if ($categoryId === null) {
+    if ($categoryId === null || $categoryId <= 0) {
         return $products;
     }
     $filtered = [];
     foreach ($products as $product) {
-        if ($product['category_id'] == $categoryId) {
+        if ($product['category_id'] === $categoryId) {
             $filtered[] = $product;
         }
     }

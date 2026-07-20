@@ -11,19 +11,8 @@ foreach ($categories as $category) {
 }
 
 // Đọc category_id từ URL để lọc
-$categoryId = null;
-
-if (isset($_GET['category_id']) && $_GET['category_id'] !== '') {
-    $categoryId = filter_var(
-        $_GET['category_id'],
-        FILTER_VALIDATE_INT
-    );
-
-    // Nếu category_id không hợp lệ hoặc không tồn tại
-    if ($categoryId === false || !isset($categoryMap[$categoryId])) {
-        $categoryId = null;
-    }
-}
+$rawCatId = (int)($_GET['category_id'] ?? 0);
+$categoryId = ($rawCatId > 0 && isset($categoryMap[$rawCatId])) ? $rawCatId : null;
 
 // Danh sách sản phẩm sau khi lọc theo Danh mục
 $displayProducts = filterByCategory($products, $categoryId);

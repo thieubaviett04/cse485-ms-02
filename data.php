@@ -1,4 +1,3 @@
-
 <?php
 $categories = [
     ['id' => 1, 'name' => 'Bàn phím', 'description' => 'Danh mục bàn phím cơ / giả cơ'],
