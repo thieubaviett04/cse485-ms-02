@@ -3,12 +3,12 @@
 /**
  * Tính thành tiền của một sản phẩm (price * qty).
  *
- * @param array $products Mảng thông tin sản phẩm.
+ * @param array $product Mảng thông tin sản phẩm.
  * @return int Thành tiền.
  */
-function lineTotal(array $products): int
+function lineTotal(array $product): int
 {
-    return $products['price'] * $products['qty'];
+    return $product['price'] * $product['qty'];
 }
 
 /**
@@ -35,8 +35,9 @@ function inventoryValue(array $products): int
  */
 function findProductBySku(array $products, string $sku): ?array
 {
+    $skuClean = trim($sku);
     foreach ($products as $product) {
-        if ($product['sku'] === $sku) {
+        if ($product['sku'] === $skuClean || strcasecmp(trim($product['sku']), $skuClean) === 0) {
             return $product;
         }
     }
@@ -54,7 +55,7 @@ function countByCategory(array $products, int $categoryId): int
 {
     $count = 0;
     foreach ($products as $product) {
-        if ($product['category_id'] === $categoryId) {
+        if ($product['category_id'] == $categoryId) {
             $count += $product['qty'];
         }
     }
@@ -74,11 +75,11 @@ function stockLevel(array $product): string
 {
     $qty = $product['qty'];
     if ($qty >= 5) {
-        return "Dư";
+        return "Du";
     } elseif ($qty >= 2) {
-        return "Sắp hết";
+        return "Sap het";
     } else {
-        return "Cần nhập";
+        return "Can nhap";
     }
 }
 
@@ -110,9 +111,9 @@ function renderProductRows(array $products, array $categoryMap): void
 
         // Thiết lập class CSS cho trạng thái tồn kho
         $status_class = '';
-        if ($status === 'Dư') {
+        if ($status === 'Du' || $status === 'Dư') {
             $status_class = 'status-abundant';
-        } elseif ($status === 'Sắp hết') {
+        } elseif ($status === 'Sap het' || $status === 'Sắp hết') {
             $status_class = 'status-warning';
         } else {
             $status_class = 'status-danger';
@@ -151,7 +152,7 @@ function filterByCategory(array $products, ?int $categoryId): array
     }
     $filtered = [];
     foreach ($products as $product) {
-        if ($product['category_id'] === $categoryId) {
+        if ($product['category_id'] == $categoryId) {
             $filtered[] = $product;
         }
     }

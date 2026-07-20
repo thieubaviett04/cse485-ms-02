@@ -119,7 +119,7 @@ foreach ($products as $p) {
                     <?php if ($searchResult):
                         $lineTotal = lineTotal($searchResult);
                         $prodStatus = stockLevel($searchResult);
-                        $status_class = ($prodStatus === 'Du') ? 'status-abundant' : (($prodStatus === 'Sap het') ? 'status-warning' : 'status-danger');
+                        $status_class = ($prodStatus === 'Du' || $prodStatus === 'Dư') ? 'status-abundant' : (($prodStatus === 'Sap het' || $prodStatus === 'Sắp hết') ? 'status-warning' : 'status-danger');
                         $catName = isset($categoryMap[$searchResult['category_id']]) ? $categoryMap[$searchResult['category_id']] : 'Chưa phân loại';
                     ?>
                         <div class="search-result-detail">
