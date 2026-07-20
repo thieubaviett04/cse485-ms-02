@@ -35,9 +35,8 @@ function inventoryValue(array $products): int
  */
 function findProductBySku(array $products, string $sku): ?array
 {
-    $skuClean = trim($sku);
     foreach ($products as $product) {
-        if ($product['sku'] === $skuClean || strcasecmp(trim($product['sku']), $skuClean) === 0) {
+        if ($product['sku'] === $sku) {
             return $product;
         }
     }
@@ -55,7 +54,7 @@ function countByCategory(array $products, int $categoryId): int
 {
     $count = 0;
     foreach ($products as $product) {
-        if ($product['category_id'] == $categoryId) {
+        if ($product['category_id'] === $categoryId) {
             $count++;
         }
     }
@@ -147,7 +146,7 @@ function renderProductRows(array $products, array $categoryMap): void
  */
 function filterByCategory(array $products, ?int $categoryId): array
 {
-    if ($categoryId === null || $categoryId <= 0) {
+    if ($categoryId === null || $categoryId === 0) {
         return $products;
     }
     $filtered = [];
