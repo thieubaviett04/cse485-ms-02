@@ -56,7 +56,7 @@ function countByCategory(array $products, int $categoryId): int
     $count = 0;
     foreach ($products as $product) {
         if ($product['category_id'] == $categoryId) {
-            $count += $product['qty'];
+            $count++;
         }
     }
     return $count;
@@ -164,12 +164,11 @@ function filterByCategory(array $products, ?int $categoryId): array
  */
 function rankInventory(int $totalValue): string
 {
-
     if ($totalValue < 15_000_000) {
-        return "Nhỏ";
+        return "Nho";
     } elseif ($totalValue < 35_000_000) {
-        return "Trung Bình";
+        return "Trung binh";
     } else {
-        return "Lớn";
+        return "Lon";
     }
 }

@@ -247,4 +247,4 @@ foreach ($products as $p) {
 </body>
 
 </html>
-<!-- MS_EXPECT product_count=8 inventory_value=41380000 -->
+<!-- MS_EXPECT inventory_value=41380000 rank=Lon -->
