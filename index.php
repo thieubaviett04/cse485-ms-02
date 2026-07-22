@@ -70,8 +70,10 @@ foreach ($categories as $cat) {
             </div>
             <div class="stat-card" id="stat-total-value">
                 <span class="stat-label">Tổng giá trị kho</span>
-                <span class="stat-value"><?php echo htmlspecialchars(number_format($totalInventoryValue, 0, ',', '.')); ?> ₫</span>
+                <span class="stat-value" data-value="<?php echo $totalInventoryValue; ?>"><?php echo htmlspecialchars(number_format($totalInventoryValue, 0, ',', '.')); ?> ₫</span>
+                <span style="display:none" id="inventory-value"><?php echo $totalInventoryValue; ?></span>
             </div>
+
             <div class="stat-card" id="stat-total-categories">
                 <span class="stat-label">Tổng số danh mục</span>
                 <span class="stat-value"><?php echo htmlspecialchars($totalCategoryCount); ?></span>
@@ -209,12 +211,16 @@ foreach ($categories as $cat) {
                                 $catQty = countByCategory($products, $cat['id']);
                                 $catVal = $categoryValues[$cat['id']] ?? 0;
                             ?>
-                                <tr>
+                                <tr data-category-id="<?php echo $cat['id']; ?>">
                                     <td><?php echo htmlspecialchars($cat['name']); ?></td>
-                                    <td class="text-center"><?php echo htmlspecialchars($catQty); ?></td>
-                                    <td class="text-right"><?php echo htmlspecialchars(number_format($catVal, 0, ',', '.')); ?> ₫</td>
+                                    <td class="text-center" data-count="<?php echo $catQty; ?>"><?php echo htmlspecialchars($catQty); ?></td>
+                                    <td class="text-right" data-value="<?php echo $catVal; ?>">
+                                        <?php echo htmlspecialchars(number_format($catVal, 0, ',', '.')); ?> ₫
+                                        <span style="display:none"><?php echo $catVal; ?></span>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
+
                         </tbody>
                         <tfoot>
                             <tr>
