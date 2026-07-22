@@ -83,6 +83,24 @@ function stockLevel(array $product): string
 }
 
 /**
+ * Tính tổng giá trị kho theo một danh mục cụ thể.
+ *
+ * @param array $products Danh sách sản phẩm.
+ * @param int $categoryId ID danh mục cần tính.
+ * @return int Tổng giá trị kho của danh mục đó.
+ */
+function valueByCategory(array $products, int $categoryId): int
+{
+    $total = 0;
+    foreach ($products as $product) {
+        if ($product['category_id'] === $categoryId) {
+            $total += lineTotal($product);
+        }
+    }
+    return $total;
+}
+
+/**
  * Điểm kiểm tra (CheckPoint) lấy sản phẩm 'MN-02' và trả về mảng thông tin.
  *
  * @param array $products Danh sách sản phẩm.

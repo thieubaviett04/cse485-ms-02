@@ -34,17 +34,12 @@ if (isset($_GET['sku']) && trim($_GET['sku']) !== '') {
     $hasSearched = true;
 }
 
-// Tính toán tổng giá trị theo từng danh mục
+// Tính toán tổng giá trị theo từng danh mục — dùng hàm valueByCategory từ helpers
 $categoryValues = [];
 foreach ($categories as $cat) {
-    $categoryValues[$cat['id']] = 0;
+    $categoryValues[$cat['id']] = valueByCategory($products, $cat['id']);
 }
-foreach ($products as $p) {
-    $catId = $p['category_id'];
-    if (isset($categoryValues[$catId])) {
-        $categoryValues[$catId] += lineTotal($p);
-    }
-}
+
 
 ?>
 <!DOCTYPE html>
@@ -195,45 +190,59 @@ foreach ($products as $p) {
                 </div>
             </div>
 
-            <!-- Cột bên phải: Tổng hợp theo danh mục (tổng các danh mục) -->
+            <!-- Cột bên phải: Bảng báo cáo theo danh mục -->
             <div class="table-card" id="category-summary-card">
-                <h2 class="table-title">Tổng hợp báo cáo</h2>
-                <div class="category-totals-list">
-                    <?php foreach ($categories as $cat):
-                        // Gọi hàm countByCategory để tính tổng số lượng tồn kho của danh mục
-                        $catQty = countByCategory($products, $cat['id']);
-                        $catVal = isset($categoryValues[$cat['id']]) ? $categoryValues[$cat['id']] : 0;
-                    ?>
-                        <div class="category-total-item">
-                            <div class="cat-info">
-                                <span class="cat-name"><?php echo htmlspecialchars($cat['name']); ?></span>
-                                <span class="cat-desc"><?php echo htmlspecialchars($cat['description']); ?></span>
-                            </div>
-                            <div class="cat-stats">
-                                <span class="cat-qty">SL: <strong><?php echo htmlspecialchars($catQty); ?></strong></span>
-                                <div class="cat-val"><?php echo htmlspecialchars(number_format($catVal, 0, ',', '.')); ?> ₫</div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+                <h2 class="table-title">Báo cáo theo danh mục</h2>
+                <div class="table-wrapper">
+                    <table id="report-table">
+                        <thead>
+                            <tr>
+                                <th>Danh mục</th>
+                                <th class="text-center">Số SP</th>
+                                <th class="text-right">Tổng giá trị</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($categories as $cat):
+                                $catQty = countByCategory($products, $cat['id']);
+                                $catVal = $categoryValues[$cat['id']] ?? 0;
+                            ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($cat['name']); ?></td>
+                                    <td class="text-center"><?php echo htmlspecialchars($catQty); ?></td>
+                                    <td class="text-right"><?php echo htmlspecialchars(number_format($catVal, 0, ',', '.')); ?> ₫</td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><strong>Tổng cộng</strong></td>
+                                <td class="text-center"><strong><?php echo count($products); ?></strong></td>
+                                <td class="text-right"><strong><?php echo number_format($totalInventoryValue, 0, ',', '.'); ?> ₫</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
+
         </div>
 
         <!-- Điểm kiểm tra (CheckPoint Console) in ra findProductBySku($products, 'MN-02') -->
         <div class="debug-card" id="checkpoint-section">
             <h3 class="debug-title" style="color: #10b981;">Điểm kiểm tra hệ thống (CheckPoint Console)</h3>
             <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
-                Kết quả của lệnh gọi <code>checkPoint($products)</code> được in dưới dạng <code>var_dump</code>:
+                Kết quả của lệnh gọi <code>findProductBySku($products, 'MN-02')</code> được in dưới dạng <code>var_dump</code>:
             </p>
-            <pre class="checkpoint-debug"><?php var_dump(checkPoint($products)); ?></pre>
+            <pre class="checkpoint-debug"><?php var_dump(findProductBySku($products, 'MN-02')); ?></pre>
         </div>
 
         <footer>
             <p>&copy; <?php echo date('Y'); ?> MiniShop. Được xây dựng trên chuẩn đầu ra CLO khóa học CSE485.</p>
         </footer>
+
+        <!-- MS_EXPECT inventory_value=41380000 rank=Lon -->
     </div>
 
 </body>
 
-</html>
-<!-- MS_EXPECT inventory_value=41380000 rank=Lon -->
+</html>
