@@ -77,9 +77,10 @@ foreach ($categories as $cat) {
                 <span class="stat-value"><?php echo htmlspecialchars($totalCategoryCount); ?></span>
             </div>
             <div class="stat-card" id="stat-inventory-rank">
-                <span class="stat-label">Quy mô kho</span>
+                <span class="stat-label">Quy mo kho</span>
                 <span class="stat-value"><?php echo htmlspecialchars($inventoryRank); ?></span>
             </div>
+
         </div>
 
         <!-- Hộp cát Tìm kiếm theo SKU (Sandbox Search) -->
@@ -173,7 +174,8 @@ foreach ($categories as $cat) {
                                 <th class="text-right">Đơn giá</th>
                                 <th class="text-center">Số lượng</th>
                                 <th class="text-right">Thành tiền</th>
-                                <th class="text-center">Tồn dư kho</th>
+                                <th class="text-center">Muc ton</th>
+
                             </tr>
                         </thead>
                         <tbody>
