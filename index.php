@@ -8,12 +8,9 @@ $categoryId = $rawCatId > 0 ? $rawCatId : null;
 $filteredProducts = filterByCategory($products, $categoryId);
 $totalInventoryValue = inventoryValue($products);
 $inventoryRank = rankInventory($totalInventoryValue);
-
-// Test findProductBySku if needed for debug
-$testProduct = findProductBySku($products, 'MN-02');
 ?>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Minishop 02</title>
@@ -22,12 +19,15 @@ $testProduct = findProductBySku($products, 'MN-02');
     <h1>Quản lý Kho (Phiếu 02)</h1>
     <!-- MS_EXPECT inventory_value=41380000 rank=Lon -->
 
+    <?php
+    $p = findProductBySku($products, 'MN-02');
+    var_dump($p['name'] ?? 'NOT FOUND');
+    ?>
+
     <div class="nav">
-        <a href="index.php" class="<?= !$categoryId ? 'active' : '' ?>">Tat ca</a>
+        <a href="index.php">Tat ca</a>
         <?php foreach ($categories as $id => $name): ?>
-            <a href="index.php?category_id=<?= htmlspecialchars((string)$id) ?>" class="<?= $categoryId === $id ? 'active' : '' ?>">
-                <?= htmlspecialchars($name) ?>
-            </a>
+            | <a href="index.php?category_id=<?= htmlspecialchars((string)$id) ?>"><?= htmlspecialchars($name) ?></a>
         <?php endforeach; ?>
     </div>
 
@@ -40,7 +40,7 @@ $testProduct = findProductBySku($products, 'MN-02');
                 <th>Danh mục</th>
                 <th>Giá</th>
                 <th>Số lượng</th>
-                <th>Mức tồn</th>
+                <th>Muc ton</th>
                 <th>Thành tiền</th>
             </tr>
         </thead>
@@ -50,8 +50,8 @@ $testProduct = findProductBySku($products, 'MN-02');
     </table>
 
     <h2>Báo cáo kho hàng</h2>
-    <p><strong>Tổng giá trị kho (toàn bộ):</strong> <?= htmlspecialchars((string)$totalInventoryValue) ?></p>
-    <p><strong>Quy mo kho:</strong> <?= htmlspecialchars($inventoryRank) ?></p>
+    <p>Tổng giá trị kho (toàn bộ): <?= htmlspecialchars((string)$totalInventoryValue) ?></p>
+    <p>Quy mo kho: <?= htmlspecialchars($inventoryRank) ?></p>
     
     <table>
         <thead>
@@ -74,18 +74,11 @@ $testProduct = findProductBySku($products, 'MN-02');
                 ?>
                 <tr>
                     <td><?= htmlspecialchars($name) ?></td>
-                    <td data-count="<?= htmlspecialchars((string)$count) ?>"><?= htmlspecialchars((string)$count) ?></td>
-                    <td data-value="<?= htmlspecialchars((string)$sumValue) ?>">
-                        <?= htmlspecialchars((string)$sumValue) ?>
-                        <span style="display:none"><?= htmlspecialchars((string)$sumValue) ?></span>
-                    </td>
+                    <td><?= htmlspecialchars((string)$count) ?></td>
+                    <td><?= htmlspecialchars((string)$sumValue) ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-
-    <div style="display:none">
-        <pre class="checkpoint-debug"><?php var_dump($testProduct); ?></pre>
-    </div>
 </body>
 </html>
